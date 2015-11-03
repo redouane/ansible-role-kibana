@@ -1,4 +1,5 @@
 ---
+
 - name: Create kibana user
   user:
     name=kibana
@@ -26,7 +27,10 @@
   notify: restart kibana
 
 - name: copy kibana init
-  template: src=kibana.init.j2 dest=/etc/init.d/kibana mode=755
+  template:
+    src=kibana.init.j2
+    dest=/etc/init.d/kibana
+    mode=755
 
 - name: enable and start kibana service
   service: name=kibana enabled=yes state=started
