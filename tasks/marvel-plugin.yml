@@ -1,0 +1,13 @@
+---
+
+- name: install Marvel plugin
+  action: >
+    shell bin/kibana plugin --install elasticsearch/marvel/latest
+    chdir={{ kibana_install_dir }}/kibana-{{ kibana_version }}-linux-x64/
+
+# Fix permissions
+- file: >
+    path="{{ kibana_install_dir }}/kibana-{{ kibana_version }}-linux-x64/installedPlugins/marvel" state=directory
+    owner={{ kibana_user }} group={{ kibana_group }}
+    recurse=yes
+  sudo: true
