@@ -1,9 +1,11 @@
 ---
 
 - name: install Sense plugin
-  action: >
-    shell bin/kibana plugin --install elastic/sense
+  shell: bin/kibana plugin --install elastic/sense
     chdir={{ kibana_install_dir }}/kibana-{{ kibana_version }}-linux-x64/
+  register: sense_plugin_installed
+  changed_when: "'Installed' in sense_plugin_installed.stdout"
+  failed_when: "sense_plugin_installed.rc != 0 and sense_plugin_installed.stderr.find('sense already exists, please remove before installing a new version') == -1"
 
 # Fix permissions
 - file: >

@@ -1,9 +1,11 @@
 ---
 
 - name: install Marvel plugin
-  action: >
-    shell bin/kibana plugin --install elasticsearch/marvel/latest
+  shell: bin/kibana plugin --install elasticsearch/marvel/latest
     chdir={{ kibana_install_dir }}/kibana-{{ kibana_version }}-linux-x64/
+  register: marvel_plugin_installed
+  changed_when: "'Installed' in marvel_plugin_installed.stdout"
+  failed_when: "marvel_plugin_installed.rc != 0 and marvel_plugin_installed.stderr.find('marvel already exists, please remove before installing a new version') == -1"
 
 # Fix permissions
 - file: >
